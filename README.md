@@ -4,4 +4,5 @@ Plugin desenvolvido pela NFSADevelop, provê diversos itens de utilidade, como, 
 
 #### Widgets:
 - NkButton.
+- NkFlatButton.
 - NkTextField.
