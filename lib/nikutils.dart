@@ -1,14 +1,18 @@
-
-import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 class Nikutils {
-  static const MethodChannel _channel =
-      const MethodChannel('nikutils');
+  static List<Widget> _loadingDialog;
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  static List<Widget> get loadingDialog {
+    if (_loadingDialog != null)
+      return _loadingDialog;
+    else
+      return <Widget>[
+        Container(width: 50, height: 50, child: CircularProgressIndicator()),
+      ];
+  }
+
+  static set loadingDialog(List<Widget> value) {
+    _loadingDialog = value;
   }
 }

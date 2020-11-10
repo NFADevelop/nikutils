@@ -24,9 +24,7 @@ class NkFlatButton extends StatefulWidget {
       this.borderRadius = 10,
       this.formKey,
       this.background})
-      : assert(width >= 90, 'Tamanho mínimo excedido; minWidht = 90.'),
-        assert(height >= 40, 'Tamanho mínimo excedido; minHeight = 40.'),
-        super(key: key);
+      : super(key: key);
 
   @override
   _NkFlatButtonState createState() => _NkFlatButtonState();
@@ -36,11 +34,8 @@ class _NkFlatButtonState extends State<NkFlatButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-          minHeight: 40.0,
-          minWidth: 90,
-          maxWidth: widget.width,
-          maxHeight: widget.height),
+      constraints:
+          BoxConstraints(maxWidth: widget.width, maxHeight: widget.height),
       margin: widget.margin,
       padding: widget.padding,
       child: FlatButton(
@@ -66,8 +61,6 @@ class _NkFlatButtonState extends State<NkFlatButton> {
                       : Container(),
                 ),
                 Container(
-                  constraints:
-                      BoxConstraints(maxWidth: widget.width, minHeight: 50.0),
                   alignment: Alignment.center,
                   child: Text(
                     widget.text,

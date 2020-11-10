@@ -1,6 +1,6 @@
 # nikutils_example
 
-Demonstrates how to use the nikutils plugin.
+Demostra o uso deste plugin
 
 ## Getting Started
 

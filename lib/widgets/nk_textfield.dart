@@ -11,7 +11,6 @@ class NkTextField extends StatefulWidget {
   final Color textColor;
   final Color underlineColor;
   final double underlineOpacity;
-
   final Icon leftItem;
   final Icon rightItem;
   final String hintText;
@@ -109,7 +108,6 @@ class _NkTextField extends State<NkTextField> {
         keyboardType: widget.keyboardType,
         maxLines: widget.maxLines,
         onChanged: widget.onChanged,
-        textAlignVertical: TextAlignVertical.center,
         scrollPadding: EdgeInsets.all(10),
         decoration: InputDecoration(
           contentPadding: widget.contentPadding,
@@ -153,7 +151,9 @@ class _NkTextField extends State<NkTextField> {
           focusedErrorBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                   style: BorderStyle.solid, color: Colors.transparent)),
-          errorStyle: TextStyle(fontSize: 15),
+          errorStyle: TextStyle(
+            fontSize: 15,
+          ),
         ),
       )
     ]);

@@ -1,6 +1,6 @@
 name: nikutils
 description: Plugin desenvolvido pela NFSADevelop, provê diversos itens de utilidade, como, NkButton, NkTextField etc.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/NFSA-Develop/nikutils
 
 environment:
