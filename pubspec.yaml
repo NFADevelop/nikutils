@@ -1,6 +1,6 @@
 name: nikutils
 description: Plugin desenvolvido pela NFSADevelop, provê diversos itens de utilidade, como, NkButton, NkTextField etc.
-version: 0.0.3
+version: 0.0.7
 homepage: https://github.com/NFSA-Develop/nikutils
 
 environment:
@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  http: ^0.12.2
+  ioc: ^0.3.0
 
 dev_dependencies:
   flutter_test:

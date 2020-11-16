@@ -17,3 +17,6 @@ Posteriormente será adicionado novos incrementos.
 	- showAlertDialog: exibe um modal de alerta onde é possível definir o título, mensagem e estilos.
 	
 	- showWidgetDialog: exibe um modal com widget pré-definido. 
+
+- http: configuração baseada na arquitetura nik (documentação ainda não disponivel). 
+- NkExtensions.

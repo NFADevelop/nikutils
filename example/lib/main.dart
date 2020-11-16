@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nikutils/utils/http/nk_http.dart';
+import 'package:nikutils/utils/http/requestdata.dart';
+import 'package:nikutils/utils/http/requesttype.dart';
 import 'dart:async';
 
 import 'package:nikutils/widgets/nk_button.dart';
@@ -7,11 +10,16 @@ import 'package:nikutils/widgets/nk_textfield.dart';
 import 'package:nikutils/extensions/nke_string.dart';
 import 'package:nikutils/controls/nk_dialogs.dart';
 
+import 'models/example.dart';
+
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  MyApp() {
+    NkHttpService.initializeHttpInjection(baseUri: "YOUR API URI");
+  }
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -35,9 +43,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
+  final NkHttpService service = Ioc().use<NkHttpService>('NkHttpService');
+
+  void test() async {
+    var requestData = RequestData<Data>(
+        fromJson: exampleFromJson, fromJsonMethod: Data.fromJsonMethod);
+    var postP = PostPrefs();
+    postP.body = {
+      "PROPERTYNAME1": "VALUE1",
+      "PROPERTYNAME2": "VALUE2",
+      "PROPERTYNAME3": "VALUE2",
+    };
+    requestData.headers = {
+      "KE1": "VALUE1",
+      "KE2": "VALUE2",
+      "Authorization": "Bearer YOURTOKEN", // Example
+    };
+    requestData.route = "YOUR REQUEST ROUTE";
+    requestData.type =
+        RequestType.post; // request type: get, post, put and delete
+    requestData.postPrefs = postP; //if your request is post the code uses that.
+    requestData.apiUriProtocol = "httpprotoc://"; // default = https://
+    var res = await service.requestNkBase<Data>(requestData);
+  }
 
   @override
   Widget build(BuildContext context) {
+    test();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exemplo NikUtils'),
