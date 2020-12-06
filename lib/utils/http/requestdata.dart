@@ -6,7 +6,6 @@ import 'package:nikutils/utils/http/requesttype.dart';
 class RequestData<T> {
   RequestData(
       {@required this.fromJson,
-      @required this.fromJsonMethod,
       this.contentType = "application/json",
       this.route,
       this.apiUriProtocol = "https://",
@@ -23,7 +22,6 @@ class RequestData<T> {
   String contentType;
   T body;
   T Function(String) fromJson;
-  T Function(Map<String, dynamic> json) fromJsonMethod;
   PostPrefs postPrefs;
 }
 

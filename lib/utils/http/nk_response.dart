@@ -4,8 +4,8 @@ import 'package:http/http.dart';
 import 'package:nikutils/utils/http/nk_errormodel.dart';
 
 NkResponse<T> nkResponseFromJson<T>(
-        String str, T Function(Map<String, dynamic> json) dataFromJson) =>
-    NkResponse<T>.fromJson(json.decode(str), dataFromJson);
+        String body, T Function(String) dataFromJson) =>
+    NkResponse<T>.fromJson(json.decode(body), dataFromJson);
 
 class NkResponse<T> {
   NkResponse({this.success, this.quantity, this.data, this.errorData, this.id});
@@ -18,13 +18,13 @@ class NkResponse<T> {
   Response httpResponse;
   List<ErrorData> errorData;
 
-  factory NkResponse.fromJson(Map<String, dynamic> json,
-          T Function(Map<String, dynamic> json) fromJson) =>
+  factory NkResponse.fromJson(
+          Map<String, dynamic> json, T Function(String) fromJson) =>
       NkResponse(
         success: json["success"],
         quantity: json["quantity"],
         id: json["id"],
-        data: json["data"] == null ? null : fromJson(json["data"]),
+        data: json["data"] == null ? null : fromJson(jsonEncode(json["data"])),
         errorData: json["errorData"] == null
             ? null
             : List<ErrorData>.from(

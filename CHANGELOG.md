@@ -1,3 +1,11 @@
+## 0.0.9
+
+* BugFix interno.
+
+## 0.0.8
+
+* BugFix interno (Requisição não retornava lista).
+
 ## 0.0.7
 
 * Adicionado NkeList.

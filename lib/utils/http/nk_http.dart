@@ -5,7 +5,11 @@ import 'package:ioc/ioc.dart';
 import 'package:nikutils/utils/http/requestdata.dart';
 import 'package:nikutils/utils/http/requesttype.dart';
 import 'package:nikutils/utils/http/nk_response.dart';
+
 export 'package:ioc/ioc.dart';
+export 'package:nikutils/utils/http/requestdata.dart';
+export 'package:nikutils/utils/http/requesttype.dart';
+export 'package:nikutils/utils/http/nk_response.dart';
 
 class NkHttpService {
   String _baseUrl;
@@ -31,8 +35,8 @@ class NkHttpService {
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
-            response = nkResponseFromJson(
-                httpResponse.body, requestData.fromJsonMethod);
+            response =
+                nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
             validate(response);
             return response;
@@ -59,8 +63,8 @@ class NkHttpService {
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
-            response = nkResponseFromJson(
-                httpResponse.body, requestData.fromJsonMethod);
+            response =
+                nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
             validate(response);
             return response;
@@ -81,8 +85,8 @@ class NkHttpService {
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
-            response = nkResponseFromJson(
-                httpResponse.body, requestData.fromJsonMethod);
+            response =
+                nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
             validate(response);
             return response;
@@ -100,8 +104,8 @@ class NkHttpService {
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
-            response = nkResponseFromJson(
-                httpResponse.body, requestData.fromJsonMethod);
+            response =
+                nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
             validate(response);
             return response;

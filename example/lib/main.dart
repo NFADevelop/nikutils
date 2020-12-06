@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nikutils/utils/http/nk_http.dart';
 import 'package:nikutils/utils/http/requestdata.dart';
@@ -45,9 +47,8 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final NkHttpService service = Ioc().use<NkHttpService>('NkHttpService');
 
-  void test() async {
-    var requestData = RequestData<Data>(
-        fromJson: exampleFromJson, fromJsonMethod: Data.fromJsonMethod);
+  Future<Data> httpExample() async {
+    var requestData = RequestData<Data>(fromJson: dataFromJson);
     var postP = PostPrefs();
     postP.body = {
       "PROPERTYNAME1": "VALUE1",
@@ -57,19 +58,41 @@ class _HomePageState extends State<HomePage> {
     requestData.headers = {
       "KE1": "VALUE1",
       "KE2": "VALUE2",
-      "Authorization": "Bearer YOURTOKEN", // Example
+      HttpHeaders.authorizationHeader: "Bearer YOURTOKEN", // Example
     };
     requestData.route = "YOUR REQUEST ROUTE";
     requestData.type =
         RequestType.post; // request type: get, post, put and delete
+    requestData.contentType =
+        "multipart/form-data"; // your request content type, default: "application/json"
     requestData.postPrefs = postP; //if your request is post the code uses that.
-    requestData.apiUriProtocol = "httpprotoc://"; // default = https://
-    var res = await service.requestNkBase<Data>(requestData);
+    requestData.apiUriProtocol = "wpp://"; // default = https://
+    var res = await service.requestNkBase(requestData);
+    return res.data;
+  }
+
+  Future<List<Data>> listExample() async {
+    var requestData = RequestData<List<Data>>(
+        fromJson: dataListFromJson); // you need o make a list mapper
+
+    requestData.headers = {
+      "KE1": "VALUE1",
+      "KE2": "VALUE2",
+      HttpHeaders.authorizationHeader: "Bearer YOURTOKEN", // Example
+    };
+    requestData.route = "YOUR REQUEST ROUTE";
+    requestData.type =
+        RequestType.get; // request type: get, post, put and delete
+    requestData.contentType =
+        "multipart/form-data"; // your request content type, default: "application/json"
+    requestData.apiUriProtocol = "wpp://"; // default = https://
+    var res = await service.requestNkBase(requestData);
+
+    return res.data;
   }
 
   @override
   Widget build(BuildContext context) {
-    test();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exemplo NikUtils'),
