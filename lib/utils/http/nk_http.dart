@@ -1,32 +1,32 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:ioc/ioc.dart';
 import 'package:nikutils/utils/http/requestdata.dart';
 import 'package:nikutils/utils/http/requesttype.dart';
 import 'package:nikutils/utils/http/nk_response.dart';
 
-export 'package:ioc/ioc.dart';
 export 'package:nikutils/utils/http/requestdata.dart';
 export 'package:nikutils/utils/http/requesttype.dart';
 export 'package:nikutils/utils/http/nk_response.dart';
 
 class NkHttpService {
   String _baseUrl;
+
   NkHttpService(String baseUrl) {
     _baseUrl = baseUrl;
   }
 
-  static void initializeHttpInjection({String baseUri}) {
-    Ioc().bind('NkHttpService', (ioc) => new NkHttpService(baseUri));
+  static void initializeHttpService({String baseUri}) {
+    Get.put(NkHttpService(baseUri));
   }
 
   Future<NkResponse<T>> requestNkBase<T>(RequestData<T> requestData) async {
     try {
       var requestUri =
-          getRequestUri(requestData.route, requestData.apiUriProtocol);
+          _getRequestUri(requestData.route, requestData.apiUriProtocol);
       if (requestData.queryParams != null)
-        requestUri = buildQueryParams(requestData.queryParams, requestUri);
+        requestUri = _buildQueryParams(requestData.queryParams, requestUri);
 
       switch (requestData.type) {
         case RequestType.get:
@@ -38,7 +38,7 @@ class NkHttpService {
             response =
                 nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
-            validate(response);
+            _validate(response);
             return response;
           } else {
             NkResponse<T> response = NkResponse<T>();
@@ -66,7 +66,7 @@ class NkHttpService {
             response =
                 nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
-            validate(response);
+            _validate(response);
             return response;
           } else {
             NkResponse<T> response = NkResponse<T>();
@@ -75,6 +75,7 @@ class NkHttpService {
             return response;
           }
           break;
+
         case RequestType.put:
           final httpResponse = await http.put(requestUri,
               headers: requestData.headers,
@@ -88,7 +89,7 @@ class NkHttpService {
             response =
                 nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
-            validate(response);
+            _validate(response);
             return response;
           } else {
             NkResponse<T> response = NkResponse<T>();
@@ -107,7 +108,7 @@ class NkHttpService {
             response =
                 nkResponseFromJson(httpResponse.body, requestData.fromJson);
             response.httpResponse = httpResponse;
-            validate(response);
+            _validate(response);
             return response;
           } else {
             NkResponse<T> response = NkResponse<T>();
@@ -131,9 +132,9 @@ class NkHttpService {
   Future<NkHttpResponse<T>> request<T>(RequestData<T> requestData) async {
     try {
       var requestUri =
-          getRequestUri(requestData.route, requestData.apiUriProtocol);
+          _getRequestUri(requestData.route, requestData.apiUriProtocol);
       if (requestData.queryParams != null)
-        requestUri = buildQueryParams(requestData.queryParams, requestUri);
+        requestUri = _buildQueryParams(requestData.queryParams, requestUri);
 
       switch (requestData.type) {
         case RequestType.get:
@@ -217,7 +218,7 @@ class NkHttpService {
     }
   }
 
-  String getRequestUri(String route, apiUriProtocol) {
+  String _getRequestUri(String route, apiUriProtocol) {
     if (_baseUrl.isNotEmpty) {
       _baseUrl.replaceAll("http://", "");
       _baseUrl.replaceAll("https://", "");
@@ -238,7 +239,7 @@ class NkHttpService {
     }
   }
 
-  String buildQueryParams(Map<String, String> queryParams, String uri) {
+  String _buildQueryParams(Map<String, String> queryParams, String uri) {
     uri = uri + "?";
     queryParams.forEach((key, value) {
       uri = uri + key + "=" + value;
@@ -246,7 +247,7 @@ class NkHttpService {
     return uri;
   }
 
-  void validate(NkResponse response) {
+  void _validate(NkResponse response) {
     var res = response;
     if (!response.success) {
       response = NkResponse();

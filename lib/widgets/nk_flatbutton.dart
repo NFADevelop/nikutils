@@ -1,19 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nikutils/models/nk_colors.dart';
 
-class NkFlatButton extends StatefulWidget {
-  final String text;
-  final double borderRadius;
-  final double height;
-  final double width;
-  final Function onClick;
-  final TextStyle textStyle;
-  final GlobalKey<FormState> formKey;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Background background;
+export 'package:nikutils/models/nk_colors.dart';
 
-  NkFlatButton(this.text,
+class NkFlatButton extends StatelessWidget {
+  const NkFlatButton(this.text,
       {Key key,
       this.margin,
       this.height = 40,
@@ -23,49 +15,62 @@ class NkFlatButton extends StatefulWidget {
       this.width = 90,
       this.borderRadius = 10,
       this.formKey,
+      this.colors,
       this.background})
       : super(key: key);
 
-  @override
-  _NkFlatButtonState createState() => _NkFlatButtonState();
-}
+  final String text;
+  final double borderRadius;
+  final double height;
+  final double width;
+  final Function onClick;
+  final TextStyle textStyle;
+  final NkColors colors;
+  final GlobalKey<FormState> formKey;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final Background background;
 
-class _NkFlatButtonState extends State<NkFlatButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints:
-          BoxConstraints(maxWidth: widget.width, maxHeight: widget.height),
-      margin: widget.margin,
-      padding: widget.padding,
+      constraints: BoxConstraints(maxWidth: width, maxHeight: height),
+      margin: margin,
+      padding: padding,
       child: FlatButton(
-        onPressed: widget.onClick,
+        onPressed: onClick,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius)),
+            borderRadius: BorderRadius.circular(borderRadius)),
         padding: EdgeInsets.all(0.0),
+        colorBrightness: colors.colorBrightness,
+        textColor: colors.textColor,
+        focusColor: colors.focusColor,
+        hoverColor: colors.hoverColor,
+        splashColor: colors.splashColor,
+        disabledColor: colors.disabledColor,
+        highlightColor: colors.highlightColor,
+        disabledTextColor: colors.disabledTextColor,
         child: Ink(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(widget.borderRadius)),
+          decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(borderRadius)),
           child: Material(
             type: MaterialType.transparency,
             child: Stack(
               children: [
                 Container(
                   constraints: BoxConstraints(
-                    maxWidth: widget.width,
+                    maxWidth: width,
                     minHeight: 50.0,
                   ),
                   alignment: Alignment.center,
-                  child: widget.background != null
-                      ? widget.background.child
-                      : Container(),
+                  child: background != null ? background.child : Container(),
                 ),
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    widget.text,
+                    text,
                     textAlign: TextAlign.center,
-                    style: widget.textStyle,
+                    style: textStyle,
                   ),
                 ),
               ],

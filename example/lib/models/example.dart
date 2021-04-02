@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
+Datas dataFromJson(String str) => Datas.fromJson(json.decode(str));
 
-List<Data> dataListFromJson(String str) =>
-    List<Data>.from(json.decode(str).map((x) => Data.fromJson(x)));
+List<Datas> dataListFromJson(String str) =>
+    List<Datas>.from(json.decode(str).map((x) => Datas.fromJson(x)));
 
-String dataListToJson(List<Data> data) =>
+String dataListToJson(List<Datas> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Data {
-  Data({
+class Datas {
+  Datas({
     this.statusCode,
   });
 
   int statusCode;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Datas.fromJson(Map<String, dynamic> json) => Datas(
         statusCode: json["statusCode"],
       );
 

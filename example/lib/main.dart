@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nikutils/nikutils.dart';
 import 'package:nikutils/utils/http/nk_http.dart';
 import 'package:nikutils/utils/http/requestdata.dart';
 import 'package:nikutils/utils/http/requesttype.dart';
+import 'package:nikutils/utils/nk_preferences.dart';
 import 'dart:async';
 
 import 'package:nikutils/widgets/nk_button.dart';
@@ -12,16 +14,17 @@ import 'package:nikutils/widgets/nk_textfield.dart';
 import 'package:nikutils/extensions/nke_string.dart';
 import 'package:nikutils/controls/nk_dialogs.dart';
 
+import 'package:get/get.dart';
+
 import 'models/example.dart';
 
-void main() {
+void main() async {
+  NkHttpService.initializeHttpService(baseUri: "YOUR API URI");
+  await NkPreferences.initializePrefsService();
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  MyApp() {
-    NkHttpService.initializeHttpInjection(baseUri: "YOUR API URI");
-  }
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -29,7 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: "Teste",
       home: HomePage(),
     );
@@ -45,10 +48,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  final NkHttpService service = Ioc().use<NkHttpService>('NkHttpService');
+  final NkHttpService service = Get.find();
 
-  Future<Data> httpExample() async {
-    var requestData = RequestData<Data>(fromJson: dataFromJson);
+  Future<Datas> httpExample() async {
+    var requestData = RequestData<Datas>(fromJson: dataFromJson);
     var postP = PostPrefs();
     postP.body = {
       "PROPERTYNAME1": "VALUE1",
@@ -71,8 +74,8 @@ class _HomePageState extends State<HomePage> {
     return res.data;
   }
 
-  Future<List<Data>> listExample() async {
-    var requestData = RequestData<List<Data>>(
+  Future<List<Datas>> listExample() async {
+    var requestData = RequestData<List<Datas>>(
         fromJson: dataListFromJson); // you need o make a list mapper
 
     requestData.headers = {
@@ -93,6 +96,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController val = TextEditingController();
+    NkPreferences prefs = Get.find();
+    var text = prefs.read("key1");
+    var recordedText = "".obs;
+    if (text != null) {
+      recordedText.value = text;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exemplo NikUtils'),
@@ -100,107 +110,122 @@ class _HomePageState extends State<HomePage> {
       body: Form(
         key: _formKey,
         child: Center(
-          child: Column(
-            children: [
-              Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: NkButton(
-                    "NkButton",
-                    onClick: () {},
-                  )),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: NkFlatButton(
-                    "NkFlatButton",
-                    onClick: () {},
-                  )),
-              Container(
-                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: NkTextField(
-                    validationFunction: (string) {
-                      if (string.isNullOrEmpty) return "Deve ter algo";
-                      if (string.length < 3) return "Deve ser maior q 3";
-                      return null;
-                    },
-                    background: (sets) {
-                      return Stack(
-                        children: [
-                          Container(
-                            width: sets.constSize.width,
-                            height: sets.constSize.height,
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              height: 1,
-                              color: Colors.blueAccent,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: NkButton(
+                      "NkButton",
+                      onClick: () {},
+                    )),
+                Container(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: NkFlatButton(
+                      "NkFlatButton",
+                      onClick: () {},
+                    )),
+                Container(
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: NkTextField(
+                      validationFunction: (string) {
+                        if (string.isNullOrEmpty) return "Deve ter algo";
+                        if (string.length < 3) return "Deve ser maior q 3";
+                        return null;
+                      },
+                      background: (sets) {
+                        return Stack(
+                          children: [
+                            Container(
+                              width: sets.constSize.width,
+                              height: sets.constSize.height,
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                height: 1,
+                                color: Colors.blueAccent,
+                              ),
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.blueAccent)),
-                            width: sets.dinamicSize.width,
-                            height: sets.dinamicSize.height,
-                          ),
-                        ],
-                      );
-                    },
-                  )),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blueAccent)),
+                              width: sets.dinamicSize.width,
+                              height: sets.dinamicSize.height,
+                            ),
+                          ],
+                        );
+                      },
+                    )),
+                Container(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: NkButton(
+                      "Show Error",
+                      onClick: () {
+                        if (_formKey.currentState.validate()) {}
+                      },
+                    )),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Text(
+                          "Dialogs",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 5, top: 5),
                   child: NkButton(
-                    "Show Error",
+                    "Show Loading",
                     onClick: () {
-                      if (_formKey.currentState.validate()) {}
+                      NkDialogs.showLoading(context);
+                      Future.delayed(const Duration(seconds: 3), () {
+                        NkDialogs.hideLoading(context);
+                      });
                     },
-                  )),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Container(
-                      child: Text(
-                        "Dialogs",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: NkButton(
-                  "Show Loading",
-                  onClick: () {
-                    NkDialogs.showLoading(context);
-                    Future.delayed(const Duration(seconds: 3), () {
-                      NkDialogs.hideLoading(context);
-                    });
-                  },
+                Container(
+                  padding: EdgeInsets.only(bottom: 5, top: 5),
+                  child: NkButton(
+                    "Show Widget Dialog",
+                    onClick: () {
+                      NkDialogs.showWidgetDialog(context,
+                          child: Container(
+                            child: Text("Test"),
+                          ));
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: NkButton(
-                  "Show Widget Dialog",
-                  onClick: () {
-                    NkDialogs.showWidgetDialog(context,
-                        child: Container(
-                          child: Text("Test"),
-                        ));
-                  },
+                Container(
+                  padding: EdgeInsets.only(bottom: 5, top: 5),
+                  child: NkButton(
+                    "Show Alert Dialog",
+                    onClick: () {
+                      NkDialogs.showAlertDialog(context,
+                          prefs: NkAlertDialogPrefs("Title", "Message"));
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 5, top: 5),
-                child: NkButton(
-                  "Show Alert Dialog",
-                  onClick: () {
-                    NkDialogs.showAlertDialog(context,
-                        prefs: NkAlertDialogPrefs("Title", "Message"));
-                  },
+                NkTextField(
+                  value: val,
                 ),
-              ),
-            ],
+                Container(
+                  child: NkButton(
+                    "Record Key",
+                    onClick: () {
+                      prefs.write("key1", val.text);
+                      recordedText.value = val.text;
+                    },
+                  ),
+                ),
+                Obx(() => Text(recordedText.value))
+              ],
+            ),
           ),
         ),
       ),

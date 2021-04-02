@@ -1,3 +1,20 @@
+## 0.1.3
+
+* Minor bugfixes.
+
+## 0.1.2
+
+* Implementado cores nos botões.
+
+## 0.1.1
+
+* Removido conflito com propriedades MediaQuery do getx.
+
+## 0.1.0
+
+* Adicionado dependencias - GetX
+* BugFix interno.
+
 ## 0.0.9
 
 * BugFix interno.

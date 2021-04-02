@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:nikutils/models/nk_colors.dart';
+
+export 'package:nikutils/models/nk_colors.dart';
 
 class NkButton extends StatelessWidget {
   const NkButton(this.text,
       {Key key,
       this.margin,
-      this.color,
+      this.colors,
       this.height = 40,
       this.padding,
       this.onClick,
       this.textStyle,
       this.width = 90,
       this.borderRadius = 10,
-      this.formKey,
-      this.background})
-      : assert(
-            background == null || color == null,
-            'Impossivel usar uma cor com um widget de fundo\n'
-            'Escolha entre um widget de fundo ou uma cor.'),
-        assert(width >= 90, 'Tamanho mínimo excedido; minWidht = 90.'),
+      this.formKey})
+      : assert(width >= 90, 'Tamanho mínimo excedido; minWidht = 90.'),
         assert(height >= 40, 'Tamanho mínimo excedido; minHeight = 40.'),
         super(key: key);
 
   final String text;
-  final Color color;
+  final NkColors colors;
   final double borderRadius;
   final double width;
   final double height;
@@ -31,7 +29,6 @@ class NkButton extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
-  final Background background;
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +42,18 @@ class NkButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
         padding: EdgeInsets.all(0.0),
+        colorBrightness: colors.colorBrightness,
+        textColor: colors.textColor,
+        focusColor: colors.focusColor,
+        hoverColor: colors.hoverColor,
+        splashColor: colors.splashColor,
+        disabledColor: colors.disabledColor,
+        highlightColor: colors.highlightColor,
+        disabledTextColor: colors.disabledTextColor,
         child: Ink(
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(borderRadius)),
+              color: colors.color,
+              borderRadius: BorderRadius.circular(borderRadius)),
           child: Container(
             width: width,
             height: height,
@@ -67,11 +73,4 @@ class NkButton extends StatelessWidget {
       ),
     );
   }
-}
-
-class Background {
-  Background({this.child, this.backgroundColor = Colors.transparent});
-
-  Widget child;
-  Color backgroundColor;
 }

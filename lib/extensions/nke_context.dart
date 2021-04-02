@@ -47,20 +47,4 @@ extension ContextExtension on BuildContext {
     }
     Navigator.pop(this);
   }
-
-  double getPercentOfHeight(double percent) {
-    return height * percent;
-  }
-
-  double getPercentOfWidth(double percent) {
-    return width * percent;
-  }
-
-  double get width {
-    return MediaQuery.of(this).size.width;
-  }
-
-  double get height {
-    return MediaQuery.of(this).size.height;
-  }
 }

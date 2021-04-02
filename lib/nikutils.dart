@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+export 'package:get/get.dart';
 
 class Nikutils {
   static List<Widget> _loadingDialog;
