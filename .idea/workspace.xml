@@ -2,17 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b572c400-9b95-42ca-b7af-5e2fdf69562a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/extensions/nke_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/extensions/nke_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/controls/nk_dialogs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/controls/nk_dialogs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/extensions/nke_context.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/extensions/nke_context.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/extensions/nke_list.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/extensions/nke_string.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/nk_alertdialogprefs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/nk_alertdialogprefs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/nk_colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/nk_colors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/nk_dialogprefs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/nk_dialogprefs.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/nikutils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nikutils.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/http/nk_errormodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/http/nk_errormodel.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/http/nk_http.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/http/nk_http.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/http/nk_response.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/http/nk_response.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/http/requestdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/http/requestdata.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/nk_preferences.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/nk_preferences.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/nk_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/nk_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/nk_flatbutton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/nk_flatbutton.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/nk_grid.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/nk_grid.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/nk_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/nk_textfield.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nikutils_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/nikutils_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +44,7 @@
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="SvnConfiguration">
@@ -48,25 +61,28 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614725344614">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="1503" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1618273166768">
+      <screen x="1366" y="0" width="1366" height="728" />
     </state>
+    <state x="1503" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728/1366.0.1366.728@1366.0.1366.728" timestamp="1618273166768" />
     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1614725344614" />
     <state x="375" y="81" key="#example/lib/main.dart" timestamp="1614725707301">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="375" y="81" key="#example/lib/main.dart/0.0.1366.728@0.0.1366.728" timestamp="1614725707301" />
-    <state x="92" y="92" width="1182" height="544" key="AVDManager" timestamp="1614725515979">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="1458" y="92" width="1182" height="544" key="AVDManager" timestamp="1618273585333">
+      <screen x="1366" y="0" width="1366" height="728" />
     </state>
+    <state x="1458" y="92" width="1182" height="544" key="AVDManager/0.0.1366.728/1366.0.1366.728@1366.0.1366.728" timestamp="1618273585333" />
     <state x="92" y="92" width="1182" height="544" key="AVDManager/0.0.1366.728@0.0.1366.728" timestamp="1614725515979" />
     <state x="502" y="110" key="AndroidProcessChooserDialog" timestamp="1614725418519">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="502" y="110" key="AndroidProcessChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1614725418519" />
-    <state x="184" y="9" key="SettingsEditor" timestamp="1614727261159">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="1550" y="9" key="SettingsEditor" timestamp="1618273580074">
+      <screen x="1366" y="0" width="1366" height="728" />
     </state>
+    <state x="1550" y="9" key="SettingsEditor/0.0.1366.728/1366.0.1366.728@1366.0.1366.728" timestamp="1618273580074" />
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614727261159" />
   </component>
 </project>

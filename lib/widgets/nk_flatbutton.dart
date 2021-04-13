@@ -1,58 +1,65 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nikutils/models/nk_colors.dart';
-
-export 'package:nikutils/models/nk_colors.dart';
 
 class NkFlatButton extends StatelessWidget {
   const NkFlatButton(this.text,
-      {Key key,
-      this.margin,
+      {Key? key,
       this.height = 40,
       this.padding,
       this.onClick,
+      this.onLongClick,
       this.textStyle,
       this.width = 90,
-      this.borderRadius = 10,
       this.formKey,
-      this.colors,
+      this.style,
       this.background})
       : super(key: key);
 
+  /// Main button text.
   final String text;
-  final double borderRadius;
-  final double height;
+
+  /// Button width, placed in an aggregate container.
   final double width;
-  final Function onClick;
-  final TextStyle textStyle;
-  final NkColors colors;
-  final GlobalKey<FormState> formKey;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Background background;
+
+  /// Button height, placed in an aggregate container.
+  final double height;
+
+  /// Primary click function.
+  final Function? onClick;
+
+  /// Long press click.
+  final Function? onLongClick;
+
+  /// Button style, if null uses the default theme.
+  final TextStyle? textStyle;
+
+  /// Style of the button.
+  final ButtonStyle? style;
+
+  /// Button form key.
+  final GlobalKey<FormState>? formKey;
+
+  /// Button padding if null uses padding of style.
+  ///
+  /// If the button style padding has value, it is preferred.
+  final EdgeInsetsGeometry? padding;
+
+  /// The button's background is equivalent to a stack with the Container and the Button.
+  final Background? background;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: width, maxHeight: height),
-      margin: margin,
-      padding: padding,
-      child: FlatButton(
-        onPressed: onClick,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius)),
-        padding: EdgeInsets.all(0.0),
-        colorBrightness: colors.colorBrightness,
-        textColor: colors.textColor,
-        focusColor: colors.focusColor,
-        hoverColor: colors.hoverColor,
-        splashColor: colors.splashColor,
-        disabledColor: colors.disabledColor,
-        highlightColor: colors.highlightColor,
-        disabledTextColor: colors.disabledTextColor,
+      width: width,
+      height: height,
+      child: TextButton(
+        onPressed: onClick as void Function()?,
+        onLongPress: onLongClick as void Function()?,
+        style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          padding ?? EdgeInsets.all(0),
+        )).merge(style),
         child: Ink(
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(borderRadius)),
           child: Material(
             type: MaterialType.transparency,
             child: Stack(
@@ -63,7 +70,7 @@ class NkFlatButton extends StatelessWidget {
                     minHeight: 50.0,
                   ),
                   alignment: Alignment.center,
-                  child: background != null ? background.child : Container(),
+                  child: background != null ? background!.child : Container(),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -85,6 +92,6 @@ class NkFlatButton extends StatelessWidget {
 class Background {
   Background({this.child, this.backgroundColor = Colors.transparent});
 
-  Widget child;
+  Widget? child;
   Color backgroundColor;
 }

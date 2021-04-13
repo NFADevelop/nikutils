@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nikutils/extensions/nke_string.dart';
 
 class NkTextField extends StatefulWidget {
   final int maxLines;
   final bool isPassword;
   final Color bgColor;
   final Color focusColor;
-  final Color cursorColor;
+  final Color? cursorColor;
   final Color textColor;
+  final Color customBgColor;
   final Color underlineColor;
   final double underlineOpacity;
-  final Icon leftItem;
-  final Icon rightItem;
+  final Icon? leftItem;
+  final Icon? rightItem;
   final String hintText;
   final TextStyle style;
-  final TextInputType keyboardType;
-  final String Function(String) validationFunction;
-  final Function(String) onChanged;
-  final EdgeInsetsGeometry contentPadding;
-  final TextEditingController value;
-  final List<TextInputFormatter> inputFormatter;
+  final TextInputType? keyboardType;
+  final String Function(String?)? validationFunction;
+  final Function(String)? onChanged;
+  final EdgeInsetsGeometry? contentPadding;
+  final TextEditingController? value;
+  final List<TextInputFormatter>? inputFormatter;
   final bool autoFocus;
-  final Widget Function(NkTextFieldBGSets) background;
+  final Widget Function(NkTextFieldBGSets)? background;
 
   static const TextStyle defaultStyle = TextStyle();
 
@@ -33,6 +33,7 @@ class NkTextField extends StatefulWidget {
       this.focusColor = Colors.black87,
       this.textColor = Colors.black87,
       this.underlineColor = Colors.black87,
+      this.customBgColor = Colors.transparent,
       this.underlineOpacity = 1,
       this.cursorColor,
       this.leftItem,
@@ -53,52 +54,69 @@ class NkTextField extends StatefulWidget {
 }
 
 class _NkTextField extends State<NkTextField> {
-  Color statusColor;
-  Color statusIconColor;
+  Color? statusColor;
+  Color? statusIconColor;
 
   final GlobalKey textKey = GlobalKey();
-  RenderBox _textRend;
-  Size _textSize;
-  Size _constSize;
-  Widget bg;
+  Widget? bg;
+  Size? size;
 
-  Future getText() {
-    return new Future.delayed(const Duration(milliseconds: 10), () {
-      _textRend = textKey.currentContext.findRenderObject();
-      _textSize = _textRend.size;
-      if (_constSize == null) _constSize = _textSize;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => postFrameCallback());
+  }
+
+  void postFrameCallback() {
+    var context = textKey.currentContext;
+    if (context == null) return;
+
+    var newSize = context.size;
+    if (size == newSize) {
       setState(() {
-        bg = widget
-            .background(NkTextFieldBGSets(statusColor, _textSize, _constSize));
+        size = newSize;
       });
+      return;
+    }
+
+    setState(() {
+      size = newSize;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    getText();
+    if (widget.background != null && textKey.currentContext != null) {
+      var bgSets = NkTextFieldBGSets(
+          statusColor == null ? widget.customBgColor : statusColor, size);
+
+      bg = widget.background!(bgSets);
+    }
     return Stack(children: [
-      if (bg != null) bg,
+      if (bg != null) bg!,
       TextFormField(
         key: textKey,
         autofocus: widget.autoFocus,
         controller: widget.value,
         validator: (value) {
-          var valid = widget.validationFunction(value);
-          if (!valid.isNullOrEmpty) {
-            setState(() {
-              statusColor = Colors.red;
-              statusIconColor = Colors.red;
-              getText();
-            });
-          } else {
-            setState(() {
-              statusColor = null;
-              statusIconColor = null;
-              getText();
-            });
+          if (widget.validationFunction != null) {
+            var valid = widget.validationFunction!(value);
+            if (valid.isNotEmpty) {
+              setState(() {
+                statusColor = Colors.red;
+                statusIconColor = Colors.red;
+                size = size;
+              });
+            } else {
+              setState(() {
+                statusColor = null;
+                statusIconColor = null;
+                size = size;
+              });
+            }
+            return valid;
           }
-          return valid;
+          return null;
         },
         cursorColor: widget.cursorColor,
         style: widget.style.merge(TextStyle(
@@ -119,8 +137,8 @@ class _NkTextField extends State<NkTextField> {
               ? Container(
                   padding: widget.contentPadding,
                   child: Icon(
-                    widget.leftItem.icon,
-                    size: widget.leftItem.size,
+                    widget.leftItem!.icon,
+                    size: widget.leftItem!.size,
                     color: statusIconColor,
                   ),
                 )
@@ -129,9 +147,9 @@ class _NkTextField extends State<NkTextField> {
               ? Container(
                   padding: widget.contentPadding,
                   child: Icon(
-                    widget.rightItem.icon,
+                    widget.rightItem!.icon,
                     color: statusIconColor,
-                    size: widget.rightItem.size,
+                    size: widget.rightItem!.size,
                   ),
                 )
               : null,
@@ -161,8 +179,7 @@ class _NkTextField extends State<NkTextField> {
 }
 
 class NkTextFieldBGSets {
-  NkTextFieldBGSets(this.backgroundColor, this.dinamicSize, this.constSize);
-  Color backgroundColor;
-  Size dinamicSize;
-  Size constSize;
+  NkTextFieldBGSets(this.borderColor, this.constSize);
+  Color? borderColor;
+  Size? constSize;
 }

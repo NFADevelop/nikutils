@@ -11,17 +11,24 @@ export 'package:nikutils/utils/http/requesttype.dart';
 export 'package:nikutils/utils/http/nk_response.dart';
 
 class NkHttpService {
-  String _baseUrl;
+  /// The base uri used for all requests.
+  String? _baseUrl;
 
-  NkHttpService(String baseUrl) {
+  NkHttpService(String? baseUrl) {
     _baseUrl = baseUrl;
   }
 
-  static void initializeHttpService({String baseUri}) {
-    Get.put(NkHttpService(baseUri));
+  /// Method that initializes service injection using the [baseUrl] for requests.
+  static void initializeHttpService({String? baseUrl}) {
+    Get.put(NkHttpService(baseUrl));
   }
 
-  Future<NkResponse<T>> requestNkBase<T>(RequestData<T> requestData) async {
+  /// Make a request using the [baseUrl] that
+  /// was initialized at instantiation.
+  ///
+  /// This request must be made using the Nik Architecture API,
+  /// Otherwise use [request()].
+  Future<NkResponse<T>?> requestNkBase<T>(RequestData<T> requestData) async {
     try {
       var requestUri =
           _getRequestUri(requestData.route, requestData.apiUriProtocol);
@@ -46,20 +53,19 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         case RequestType.post:
           if (requestData.headers == null)
             requestData.headers = {"Content-Type": requestData.contentType};
           else
-            requestData.headers
+            requestData.headers!
                 .addAll({"Content-Type": requestData.contentType});
           final httpResponse = await http.post(requestUri,
               headers: requestData.headers,
-              body: requestData.postPrefs.body == null
+              body: requestData.postPrefs!.body == null
                   ? jsonEncode("")
-                  : jsonEncode(requestData.postPrefs.body),
-              encoding: requestData.postPrefs.encoding);
+                  : jsonEncode(requestData.postPrefs!.body),
+              encoding: requestData.postPrefs!.encoding);
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
@@ -74,15 +80,14 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         case RequestType.put:
           final httpResponse = await http.put(requestUri,
               headers: requestData.headers,
-              body: requestData.postPrefs.body == null
+              body: requestData.postPrefs!.body == null
                   ? ""
-                  : requestData.postPrefs.body,
-              encoding: requestData.postPrefs.encoding);
+                  : requestData.postPrefs!.body,
+              encoding: requestData.postPrefs!.encoding);
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkResponse<T> response = NkResponse<T>();
@@ -97,7 +102,6 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         case RequestType.delete:
           final httpResponse =
@@ -116,7 +120,6 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         default:
           return null;
@@ -129,7 +132,9 @@ class NkHttpService {
     }
   }
 
-  Future<NkHttpResponse<T>> request<T>(RequestData<T> requestData) async {
+  /// Make a request using the [baseUrl] that
+  /// was initialized at instantiation.
+  Future<NkHttpResponse<T>?> request<T>(RequestData<T> requestData) async {
     try {
       var requestUri =
           _getRequestUri(requestData.route, requestData.apiUriProtocol);
@@ -151,15 +156,14 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         case RequestType.post:
           final httpResponse = await http.post(requestUri,
               headers: requestData.headers,
-              body: requestData.postPrefs.body == null
+              body: requestData.postPrefs!.body == null
                   ? jsonEncode("")
-                  : jsonEncode(requestData.postPrefs.body),
-              encoding: requestData.postPrefs.encoding);
+                  : jsonEncode(requestData.postPrefs!.body),
+              encoding: requestData.postPrefs!.encoding);
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkHttpResponse<T> response = NkHttpResponse<T>();
@@ -171,14 +175,13 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
         case RequestType.put:
           final httpResponse = await http.put(requestUri,
               headers: requestData.headers,
-              body: requestData.postPrefs.body == null
+              body: requestData.postPrefs!.body == null
                   ? ""
-                  : requestData.postPrefs.body,
-              encoding: requestData.postPrefs.encoding);
+                  : requestData.postPrefs!.body,
+              encoding: requestData.postPrefs!.encoding);
           if (httpResponse.statusCode >= 200 &&
               httpResponse.statusCode <= 226) {
             NkHttpResponse<T> response = NkHttpResponse<T>();
@@ -190,7 +193,6 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         case RequestType.delete:
           final httpResponse =
@@ -206,7 +208,6 @@ class NkHttpService {
             response.httpResponse = httpResponse;
             return response;
           }
-          break;
 
         default:
           return null;
@@ -218,11 +219,12 @@ class NkHttpService {
     }
   }
 
-  String _getRequestUri(String route, apiUriProtocol) {
-    if (_baseUrl.isNotEmpty) {
-      _baseUrl.replaceAll("http://", "");
-      _baseUrl.replaceAll("https://", "");
-      _baseUrl.replaceAll("/", "");
+  /// Builds the Uri according to the service specifications.
+  Uri _getRequestUri(String? route, apiUriProtocol) {
+    if (_baseUrl!.isNotEmpty) {
+      _baseUrl!.replaceAll("http://", "");
+      _baseUrl!.replaceAll("https://", "");
+      _baseUrl!.replaceAll("/", "");
 
       if (route != null) {
         if (route.length >= 1) if ((route[route.length - 1] == '/'))
@@ -231,25 +233,23 @@ class NkHttpService {
         if (route.isNotEmpty) if (route[0] == '/')
           route = route.substring(1, route.length);
 
-        return apiUriProtocol + _baseUrl + "/" + route;
+        return Uri.parse(apiUriProtocol + _baseUrl + "/" + route);
       }
-      return apiUriProtocol + _baseUrl + "/";
+      return Uri.parse(apiUriProtocol + _baseUrl);
     } else {
       throw Exception("BaseUri is null or empty");
     }
   }
 
-  String _buildQueryParams(Map<String, String> queryParams, String uri) {
-    uri = uri + "?";
-    queryParams.forEach((key, value) {
-      uri = uri + key + "=" + value;
-    });
-    return uri;
+  /// Constructs the URI query parameters [queryParams] for a given Uri [uri].
+  Uri _buildQueryParams(Map<String, dynamic>? queryParams, Uri uri) {
+    return Uri(scheme: uri.toString(), queryParameters: queryParams);
   }
 
+  /// Method that validates the reponse [response] of Nik Architecture.
   void _validate(NkResponse response) {
     var res = response;
-    if (!response.success) {
+    if (!response.success!) {
       response = NkResponse();
       response.success = res.success;
       response.errorData = res.errorData;

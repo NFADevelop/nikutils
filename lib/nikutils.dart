@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 export 'package:get/get.dart';
 
 class Nikutils {
-  static List<Widget> _loadingDialog;
+  static List<Widget>? _loadingDialog;
 
-  static List<Widget> get loadingDialog {
+  static List<Widget>? get loadingDialog {
     if (_loadingDialog != null)
       return _loadingDialog;
     else
@@ -13,7 +13,7 @@ class Nikutils {
       ];
   }
 
-  static set loadingDialog(List<Widget> value) {
+  static set loadingDialog(List<Widget>? value) {
     _loadingDialog = value;
   }
 

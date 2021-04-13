@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nikutils/extensions/nke_string.dart';
 
 extension ContextExtension on BuildContext {
-  static DateTime currentBackPressTime;
+  static DateTime? currentBackPressTime;
   unfocusKeyboard() {
     FocusScope.of(this).unfocus();
   }
@@ -15,32 +14,27 @@ extension ContextExtension on BuildContext {
       SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
-  push({@required Widget page}) {
-    if (page == null || this == null) return;
-
+  push({required Widget page}) {
     Navigator.push(this, MaterialPageRoute(builder: (context) => page));
   }
 
-  pushNamed(String route, {Object args}) {
-    if (route.isNullOrEmpty || this == null) return;
+  pushNamed(String route, {Object? args}) {
+    if (route.isEmpty) return;
 
     Navigator.pushNamed(this, route, arguments: args);
   }
 
-  pushReplacement({@required Widget page}) {
-    if (page == null || this == null) return;
+  pushReplacement({required Widget page}) {
     Navigator.pushReplacement(
         this, MaterialPageRoute(builder: (context) => page));
   }
 
-  pushReplacementNamed(String route, {Object args}) {
-    if (route.isNullOrEmpty || this == null) return;
+  pushReplacementNamed(String route, {Object? args}) {
+    if (route.isEmpty) return;
     Navigator.pushReplacementNamed(this, route, arguments: args);
   }
 
-  pop({bool result}) {
-    if (this == null) return;
-
+  pop({bool? result}) {
     if (result != null) {
       Navigator.pop(this, result);
       return;

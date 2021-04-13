@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:nikutils/utils/http/nk_errormodel.dart';
 
+/// Used to convert Nik Architecture response into Dart models.
 NkResponse<T> nkResponseFromJson<T>(
         String body, T Function(String) dataFromJson) =>
     NkResponse<T>.fromJson(json.decode(body), dataFromJson);
@@ -10,13 +11,13 @@ NkResponse<T> nkResponseFromJson<T>(
 class NkResponse<T> {
   NkResponse({this.success, this.quantity, this.data, this.errorData, this.id});
 
-  T data;
-  bool success;
-  int id;
-  int quantity;
-  Object exception;
-  Response httpResponse;
-  List<ErrorData> errorData;
+  T? data;
+  bool? success;
+  int? id;
+  int? quantity;
+  Object? exception;
+  Response? httpResponse;
+  List<ErrorData>? errorData;
 
   factory NkResponse.fromJson(
           Map<String, dynamic> json, T Function(String) fromJson) =>
@@ -36,12 +37,12 @@ class NkResponse<T> {
         "quantity": quantity,
         "data": toJson,
         "id": id,
-        "errorData": List<dynamic>.from(errorData.map((x) => x.toJson())),
+        "errorData": List<dynamic>.from(errorData!.map((x) => x.toJson())),
       };
 }
 
 class NkHttpResponse<T> {
-  T data;
-  Object exception;
-  Response httpResponse;
+  T? data;
+  Object? exception;
+  Response? httpResponse;
 }

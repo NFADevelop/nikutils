@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+/// The main preferences used throughout the plugin.
 class NkPreferences {
-  GetStorage _box;
+  late GetStorage _box;
 
   void _initializePreferences() {
     _box = GetStorage();
@@ -18,7 +19,7 @@ class NkPreferences {
     _box.write(key, value);
   }
 
-  T read<T>(String key) {
+  T? read<T>(String key) {
     return _box.read<T>(key);
   }
 }

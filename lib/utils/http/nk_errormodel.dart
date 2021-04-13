@@ -11,10 +11,20 @@ class ErrorData {
     this.invalidFields,
   });
 
-  String errorForUser;
-  String errorForDeveloper;
-  List<InvalidField> invalidFields;
+  /// Error for user property used in Nik Architecture.
+  String? errorForUser;
 
+  /// Error for developer property used in Nik Architecture.
+  ///
+  /// Most commonly used for debugging.
+  String? errorForDeveloper;
+
+  /// List of invalid properties.
+  ///
+  /// In architecture, it can return null.
+  List<InvalidField>? invalidFields;
+
+  /// Simple meethod that converts json [json] to data.
   factory ErrorData.fromJson(Map<String, dynamic> json) => ErrorData(
         errorForUser: json["errorForUser"],
         errorForDeveloper: json["errorForDeveloper"],
@@ -22,11 +32,12 @@ class ErrorData {
             json["invalidFields"].map((x) => InvalidField.fromJson(x))),
       );
 
+  /// Simple meethod that converts data [ErrorData] to Json.
   Map<String, dynamic> toJson() => {
         "errorForUser": errorForUser,
         "errorForDeveloper": errorForDeveloper,
         "invalidFields":
-            List<dynamic>.from(invalidFields.map((x) => x.toJson())),
+            List<dynamic>.from(invalidFields!.map((x) => x.toJson())),
       };
 }
 
@@ -36,8 +47,11 @@ class InvalidField {
     this.description,
   });
 
-  String field;
-  String description;
+  /// Invalid field used in Nik Architecture validation.
+  String? field;
+
+  /// Description of the field used in Nik Architecture validation.
+  String? description;
 
   factory InvalidField.fromJson(Map<String, dynamic> json) => InvalidField(
         field: json["field"],

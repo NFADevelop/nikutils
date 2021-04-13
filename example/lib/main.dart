@@ -11,7 +11,6 @@ import 'dart:async';
 import 'package:nikutils/widgets/nk_button.dart';
 import 'package:nikutils/widgets/nk_flatbutton.dart';
 import 'package:nikutils/widgets/nk_textfield.dart';
-import 'package:nikutils/extensions/nke_string.dart';
 import 'package:nikutils/controls/nk_dialogs.dart';
 
 import 'package:get/get.dart';
@@ -19,7 +18,7 @@ import 'package:get/get.dart';
 import 'models/example.dart';
 
 void main() async {
-  NkHttpService.initializeHttpService(baseUri: "YOUR API URI");
+  NkHttpService.initializeHttpService(baseUrl: "YOUR API URI");
   await NkPreferences.initializePrefsService();
   runApp(MyApp());
 }
@@ -68,7 +67,8 @@ class _HomePageState extends State<HomePage> {
         RequestType.post; // request type: get, post, put and delete
     requestData.contentType =
         "multipart/form-data"; // your request content type, default: "application/json"
-    requestData.postPrefs = postP; //if your request is post the code uses that.
+    requestData.postPrefs =
+        postP; // if your request is post the code uses that.
     requestData.apiUriProtocol = "wpp://"; // default = https://
     var res = await service.requestNkBase(requestData);
     return res.data;
@@ -118,6 +118,14 @@ class _HomePageState extends State<HomePage> {
                     child: NkButton(
                       "NkButton",
                       onClick: () {},
+                      // height: 100,
+                      // width: 1000,
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20)))),
                     )),
                 Container(
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -129,27 +137,19 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: NkTextField(
                       validationFunction: (string) {
-                        if (string.isNullOrEmpty) return "Deve ter algo";
+                        if (string.isEmpty) return "Deve ter algo";
                         if (string.length < 3) return "Deve ser maior q 3";
                         return null;
                       },
+                      customBgColor: Colors.purple,
                       background: (sets) {
                         return Stack(
                           children: [
                             Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: sets.borderColor)),
                               width: sets.constSize.width,
                               height: sets.constSize.height,
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                height: 1,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blueAccent)),
-                              width: sets.dinamicSize.width,
-                              height: sets.dinamicSize.height,
                             ),
                           ],
                         );

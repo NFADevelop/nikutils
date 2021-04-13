@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:nikutils/utils/http/requesttype.dart';
 
+/// Used in requests.
 class RequestData<T> {
   RequestData(
-      {@required this.fromJson,
+      {required this.fromJson,
       this.contentType = "application/json",
       this.route,
       this.apiUriProtocol = "https://",
@@ -14,21 +13,21 @@ class RequestData<T> {
       this.headers,
       this.queryParams,
       this.type});
-  String route;
-  Map<String, String> queryParams;
-  Map<String, String> headers;
-  RequestType type;
+  String? route;
+  Map<String, String>? queryParams;
+  Map<String, String>? headers;
+  RequestType? type;
   String apiUriProtocol;
   String contentType;
-  T body;
+  Map<String, dynamic>? body;
   T Function(String) fromJson;
-  PostPrefs postPrefs;
+  PostPrefs? postPrefs;
 }
 
-class PostPrefs<T> {
+class PostPrefs {
   PostPrefs({this.body, this.encoding});
-  T body;
-  Encoding encoding;
+  Map<String, dynamic>? body;
+  Encoding? encoding;
 
   String bodyToJson() => jsonEncode(body);
 }
