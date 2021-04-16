@@ -62,9 +62,10 @@ class _HomePageState extends State<HomePage> {
       "KE2": "VALUE2",
       HttpHeaders.authorizationHeader: "Bearer YOURTOKEN", // Example
     };
-    requestData.route = "YOUR REQUEST ROUTE";
+    requestData.queryParams = {"QUERY PARAMETER": "QUERY PARAMETER VALUE"};
+    requestData.route = "ROUTE";
     requestData.type =
-        RequestType.post; // request type: get, post, put and delete
+        RequestType.get; // request type: get, post, put and delete
     requestData.contentType =
         "multipart/form-data"; // your request content type, default: "application/json"
     requestData.postPrefs =

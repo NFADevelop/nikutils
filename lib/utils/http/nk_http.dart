@@ -12,14 +12,14 @@ export 'package:nikutils/utils/http/nk_response.dart';
 
 class NkHttpService {
   /// The base uri used for all requests.
-  String? _baseUrl;
+  String _baseUrl = "";
 
-  NkHttpService(String? baseUrl) {
+  NkHttpService(String baseUrl) {
     _baseUrl = baseUrl;
   }
 
   /// Method that initializes service injection using the [baseUrl] for requests.
-  static void initializeHttpService({String? baseUrl}) {
+  static void initializeHttpService({required String baseUrl}) {
     Get.put(NkHttpService(baseUrl));
   }
 
@@ -30,10 +30,12 @@ class NkHttpService {
   /// Otherwise use [request()].
   Future<NkResponse<T>?> requestNkBase<T>(RequestData<T> requestData) async {
     try {
-      var requestUri =
-          _getRequestUri(requestData.route, requestData.apiUriProtocol);
+      var requestUri = Uri();
       if (requestData.queryParams != null)
-        requestUri = _buildQueryParams(requestData.queryParams, requestUri);
+        requestUri =
+            _getRequestUri(requestData.route!, requestData.queryParams);
+      else
+        requestUri = _getRequestUri(requestData.route!);
 
       switch (requestData.type) {
         case RequestType.get:
@@ -136,10 +138,12 @@ class NkHttpService {
   /// was initialized at instantiation.
   Future<NkHttpResponse<T>?> request<T>(RequestData<T> requestData) async {
     try {
-      var requestUri =
-          _getRequestUri(requestData.route, requestData.apiUriProtocol);
+      var requestUri = Uri();
       if (requestData.queryParams != null)
-        requestUri = _buildQueryParams(requestData.queryParams, requestUri);
+        requestUri =
+            _getRequestUri(requestData.route!, requestData.queryParams);
+      else
+        requestUri = _getRequestUri(requestData.route!);
 
       switch (requestData.type) {
         case RequestType.get:
@@ -220,30 +224,27 @@ class NkHttpService {
   }
 
   /// Builds the Uri according to the service specifications.
-  Uri _getRequestUri(String? route, apiUriProtocol) {
-    if (_baseUrl!.isNotEmpty) {
-      _baseUrl!.replaceAll("http://", "");
-      _baseUrl!.replaceAll("https://", "");
-      _baseUrl!.replaceAll("/", "");
+  Uri _getRequestUri(String route, [Map<String, dynamic>? queryParams]) {
+    var uri = _baseUrl;
+    uri = uri.replaceAll("http://", "");
+    uri = uri.replaceAll("https://", "");
 
-      if (route != null) {
-        if (route.length >= 1) if ((route[route.length - 1] == '/'))
-          route = route.substring(0, route.length - 1);
+    if (route.length >= 1) if ((route[route.length - 1] == '/'))
+      route = route.substring(0, route.length - 1);
 
-        if (route.isNotEmpty) if (route[0] == '/')
-          route = route.substring(1, route.length);
+    if (route.isNotEmpty) if (route[0] == '/')
+      route = route.substring(1, route.length);
 
-        return Uri.parse(apiUriProtocol + _baseUrl + "/" + route);
-      }
-      return Uri.parse(apiUriProtocol + _baseUrl);
-    } else {
-      throw Exception("BaseUri is null or empty");
+    uri = "https://" + uri + "/" + route;
+
+    if (queryParams != null) {
+      uri = uri + "?";
+      queryParams.forEach((key, value) {
+        uri = uri + key + "=" + value;
+      });
     }
-  }
 
-  /// Constructs the URI query parameters [queryParams] for a given Uri [uri].
-  Uri _buildQueryParams(Map<String, dynamic>? queryParams, Uri uri) {
-    return Uri(scheme: uri.toString(), queryParameters: queryParams);
+    return Uri.parse(uri);
   }
 
   /// Method that validates the reponse [response] of Nik Architecture.

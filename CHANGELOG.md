@@ -1,3 +1,7 @@
+## 1.0.2 - Minor Update
+
+* Bugfix interno.
+
 ## 1.0.1 - Major Update
 
 * Atualizado Dart Docs de classes.
